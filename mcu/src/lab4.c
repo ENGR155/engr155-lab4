@@ -103,7 +103,7 @@ void waitForTIM6Update(void) {
 }
 
 /*
-PSC to give a 1 MHz counter = 80MHz/1MHz - 1 = 79
+PSC to give a 1 MHz counter = 4MHz/1MHz - 1 = 3
 ARR to update every 1 ms is (79+1)(ARR + 1)/(80 MHz) = 0.001 -> ARR = 999
 */
 
@@ -122,7 +122,7 @@ void playnote(uint16_t pitch, uint16_t duration) {
     // Handle a rest separately to avoid dividing by zero
     if (pitch == 0U) {
         // One timer update per millisecond
-        configureTIM6(79, 999);
+        configureTIM6(3, 999);
 
         for (count = 0; count < duration; count++) {
             waitForTIM6Update();
@@ -137,7 +137,7 @@ void playnote(uint16_t pitch, uint16_t duration) {
         // Number of updates to fit in the duration (s)
         int update = (1000*duration + n / 2)/n;
 
-        configureTIM6(79, arr);
+        configureTIM6(3, arr);
 
         // Turns off PA9
         GPIOA->ODR &= ~(1U << 9);
